@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formulaire 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}Hello AuthController!{% endblock %}
+
+{% block body %}
+<style>
+    
+    h1 {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .button {
+        text-align: center;
+    }
+</style>
+
+    <h1>Création d'un compte</h1>
+
+    <div class="row">
+        <div class="col-3"></div>
+            <div class="col-6">
+
+                {{ form_start(formulaire) }}
+
+                    {{ form_row(formulaire.username) }}    
+                    {{ form_row(formulaire.email) }}
+                    {{ form_row(formulaire.password) }}
+                    {{ form_row(formulaire.passwordConfirm) }}
+
+                <div class="button">
+                    <button type="submit" class="btn btn-info">Inscription</button>
+                </div>
+
+                {{ form_end(formulaire) }}
+
+            </div>
+        <div class="col-3"></div>
+    </div>
+{% endblock %}

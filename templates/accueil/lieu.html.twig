@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formulaire 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}Lieux touristiques{% endblock %}
+
+{% block body %}
+<style>
+    
+    h1 {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    img {
+        display: block;
+        margin: auto;
+    }
+
+</style>
+
+    <h1>Carte du lieu touristique</h1>
+
+        <div class="row">
+            <div class="col">
+                <hr>
+                <img src="https://picsum.photos/800/300" alt="image aléatoire">
+                <hr>
+                <p>Nom du monument : {{ lieu.name }}</p>
+                <p>Pays : {{ lieu.location }}</p>
+                <p>Ville : {{ lieu.country }}</p>
+                <p>Description du monument : {{ lieu.description }}</p>
+                <p>Date d'ajout : {{ lieu.createAt | date("d/m/Y") }}</p>
+                <p>Durée de la visite : {{ lieu.duration | date("%hh%i") }}</p>
+                <hr>
+            <div>
+            <div class="button text-center">
+                <a class="btn btn-success" href=" {{ path("accueil") }}">Retour a l'accueil</a>
+            </div>
+        </div>
+
+
+        <div>
+            {% if lieu.commentaires | length == 0 %}
+
+            <p> <strong> Aucun commentaire pour ce lieu ! </strong>
+
+            {% else %}
+
+                {% for commentaire in lieu.commentaires %}
+
+                    {# Afficher le même nombre d'étoiles que la note avec <i class="fas fa-star"></i> de Font Awesome #}
+                    <div>
+                        <hr>
+                            <p>Note : <strong> {{ commentaire.rating }} /10 </strong>
+                            {% for i in 1..commentaire.rating %}
+                                <i class="fas fa-star"></i> </p>
+
+                            {% endfor %}}
+
+                            {% for i in 1..10-commentaire.rating %}
+                                <i class="far fa-star"></i>
+
+                            {% endfor %}
+                            </p>
+
+                        <br>
+                            <p> {{ commentaire.content }} </p>
+                            <a href=" {{ path ("delete_commentaire", {id:commentaire.id})}} " class="btn btn-danger">Supprimer</a>
+                        <hr>
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-3"></div>
+                <div class="col-6">
+
+            {% if app.user %}
+
+                {{form_start(formulaire)}}
+
+                    {{form_row(formulaire.rating)}}
+                    {{form_row(formulaire.content)}}
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-info">Poster</button>
+                </div>
+                {{form_end(formulaire)}}
+
+            {% else %}
+
+                <p class="text-center m-2"><strong>Connecter-vous <a href="{{ path("login") }}">ici</a> pour laisser un commentaire.</strong></p>
+
+            {% endif %}
+
+                </div>
+            <div class="col-3"></div>
+        </div>
+
+{% endblock %}
